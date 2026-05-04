@@ -38,6 +38,8 @@ func buildRouter(db *gorm.DB) *gin.Engine {
 	pluginRepo := &repository.PluginRepositoryImpl{DB: db}
 	pluginController := &controller.PluginController{Repo: pluginRepo}
 
+	router.Static("/plugins", "./plugins")
+
 	router.GET("", func(context *gin.Context) { context.JSON(http.StatusOK, "Hello from Orca") })
 	router.GET("/plugins", pluginController.FindAll)
 	router.POST("/plugins", pluginController.Create)
