@@ -47,5 +47,7 @@ type ProjectAssignment struct {
 
 type Plugin struct {
 	gorm.Model
-	Name string `gorm:"unique; not null" json:"name"`
+	Name  string `gorm:"unique; not null" json:"name"`
+	Url   string `gorm:"unique; not null" json:"url"`
+	Local bool   `json:"local"`
 }
