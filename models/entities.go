@@ -28,6 +28,13 @@ type Permission struct {
 	OwnedBy   string `gorm:"unique; not null" json:"ownedBy"`
 }
 
+type Project struct {
+	gorm.Model
+	Name        string   `gorm:"unique; not null" json:"name"`
+	Description string   `json:"description"`
+	Plugins     []Plugin `gorm:"many2many:project_plugins;" json:"plugins"`
+}
+
 type ProjectAssignment struct {
 	gorm.Model
 	UserID    uint    `gorm:"primaryKey"`
@@ -36,13 +43,6 @@ type ProjectAssignment struct {
 	User      User    `json:"-"`
 	Project   Project `json:"project"`
 	Role      Role    `json:"role"`
-}
-
-type Project struct {
-	gorm.Model
-	Name        string   `gorm:"unique; not null" json:"name"`
-	Description string   `json:"description"`
-	Plugins     []Plugin `gorm:"many2many:project_plugins;" json:"plugins"`
 }
 
 type Plugin struct {
