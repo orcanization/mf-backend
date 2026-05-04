@@ -58,5 +58,5 @@ type Plugin struct {
 	BaseModel
 	Name  string `gorm:"unique; not null" json:"name"`
 	Url   string `gorm:"unique; not null" json:"url"`
-	Local bool   `json:"local"`
+	Local bool   `json:"isLocal"`
 }
