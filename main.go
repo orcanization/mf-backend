@@ -6,6 +6,7 @@ import (
 	"orca-backend/repository"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -29,10 +30,14 @@ func main() {
 }
 
 func buildRouter(db *gorm.DB) *gin.Engine {
+	router := gin.Default()
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:8080"}
+	router.Use(cors.New(corsConfig))
+
 	pluginRepo := &repository.PluginRepositoryImpl{DB: db}
 	pluginController := &controller.PluginController{Repo: pluginRepo}
 
-	router := gin.Default()
 	router.GET("", func(context *gin.Context) { context.JSON(http.StatusOK, "Hello from Orca") })
 	router.GET("/plugins", pluginController.FindAll)
 	router.POST("/plugins", pluginController.Create)
