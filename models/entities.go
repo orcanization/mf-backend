@@ -1,11 +1,20 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
+type BaseModel struct {
+	ID        uint           `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt,omitempty"`
+}
+
 type User struct {
-	gorm.Model
+	BaseModel
 	Username           string              `gorm:"unique; not null" json:"username" `
 	DisplayName        string              `json:"displayName"`
 	Email              string              `gorm:"unique" json:"email"`
@@ -14,7 +23,7 @@ type User struct {
 }
 
 type Role struct {
-	gorm.Model
+	BaseModel
 	Name        string       `gorm:"unique; not null" json:"name"`
 	Description string       `json:"description"`
 	IsProject   bool         `json:"isProject"`
@@ -22,21 +31,21 @@ type Role struct {
 }
 
 type Permission struct {
-	gorm.Model
+	BaseModel
 	Name      string `gorm:"unique; not null" json:"name"`
 	IsProject bool   `json:"isProject"`
 	OwnedBy   string `gorm:"unique; not null" json:"ownedBy"`
 }
 
 type Project struct {
-	gorm.Model
+	BaseModel
 	Name        string   `gorm:"unique; not null" json:"name"`
 	Description string   `json:"description"`
 	Plugins     []Plugin `gorm:"many2many:project_plugins;" json:"plugins"`
 }
 
 type ProjectAssignment struct {
-	gorm.Model
+	BaseModel
 	UserID    uint    `gorm:"primaryKey"`
 	ProjectID uint    `gorm:"primaryKey"`
 	RoleID    uint    `gorm:"primaryKey"`
@@ -46,7 +55,7 @@ type ProjectAssignment struct {
 }
 
 type Plugin struct {
-	gorm.Model
+	BaseModel
 	Name  string `gorm:"unique; not null" json:"name"`
 	Url   string `gorm:"unique; not null" json:"url"`
 	Local bool   `json:"local"`
