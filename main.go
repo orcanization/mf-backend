@@ -31,8 +31,12 @@ func main() {
 
 func buildRouter(db *gorm.DB) *gin.Engine {
 	router := gin.Default()
+
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{"http://localhost:8080"}
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"}
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Type"}
+	corsConfig.AllowPrivateNetwork = true
 	router.Use(cors.New(corsConfig))
 
 	pluginRepo := &repository.PluginRepositoryImpl{DB: db}
